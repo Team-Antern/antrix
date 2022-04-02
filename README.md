@@ -4,7 +4,7 @@
     <img src="_assets/ca.png">
 </div>
 
-AnTrix is Inspired from the (Matrix)[https://en.wikipedia.org/wiki/The_Matrix] for the repository theme. 
+AnTrix is Inspired from the [Matrix](https://en.wikipedia.org/wiki/The_Matrix) for the repository theme. 
 
 AnTrix is an collection of our open source guided and research projects in various domains like AR/VR, Web development, AI/Machine learning, etc. All guided projects are built by top engineers here at (Antern)[https://antern.co/]. We showcase Production Level projects to help open source community to learn and grow. 
 
