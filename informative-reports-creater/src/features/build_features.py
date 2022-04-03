@@ -7,6 +7,9 @@ from nltk import sent_tokenize, word_tokenize
 import gensim
 import re
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+import joblib
+
 from gensim.models.fasttext import FastText
 class FeatureEngineering: 
     def __init__(self, df): 
@@ -16,7 +19,7 @@ class FeatureEngineering:
     def remove_features(self): 
         try: 
             logging.info("Removing features from the dataframe")
-            cols_to_remove = ["cid", "time", "author", "photo"] 
+            cols_to_remove = ["cid", "time", "author", "photo"]  
             self.df_copy = self.df_copy.drop(cols_to_remove, axis=1) 
             return self.df_copy 
         except Exception as e:
@@ -150,24 +153,40 @@ class FeatureEngineering:
             raise e
 
     def tf_idf_vectorizer(self, column):
-        self.logging.log(
-            self.file_object,
+        logging.info(
+            
             "In tf_idf_vectorizer method In Vectorization class: adding tf-idf features"
         )
         try:
             # tfidf_vectorizer = TfidfVectorizer(max_df=0.8, min_df=2, max_features=1000, stop_words='english')
-            tfidf_vectorizer = TfidfVectorizer(max_df=0.8, min_df=2, max_features=1000)
-            tfidf_train = tfidf_vectorizer.fit_transform(column)
-            tfidf_train = pd.DataFrame(tfidf_train.toarray())
-            self.logging.log(
-                self.file_object,
-                "In tf_idf_vectorizer method In Vectorization class: successfully added tf-idf features"
-            )
-            return tfidf_train
+            vectorizer = TfidfVectorizer(max_features=5000)
+
+            extracted_data = list(vectorizer.fit_transform(self.df[column]).toarray())
+            extracted_data = pd.DataFrame(extracted_data)
+            extracted_data.head()
+            extracted_data.columns = vectorizer.get_feature_names()
+
+            vocab = vectorizer.vocabulary_
+            mapping = vectorizer.get_feature_names()
+            keys = list(vocab.keys())
+
+            extracted_data.shape
+            Modified_df = extracted_data.copy()
+            print(Modified_df.shape)
+            Modified_df.head()
+            Modified_df.reset_index(drop=True, inplace=True)
+            self.df.reset_index(drop=True, inplace=True)
+
+            Final_Training_data = pd.concat([self.df, Modified_df], axis=1)
+
+            Final_Training_data.drop(column, axis=1, inplace=True)
+            Final_Training_data.to_csv("informative-reports-creater/src/features/final_training_vectorized.csv", index=False)
+
+            joblib.dump(vectorizer, "informative-reports-creater/models/vectorizer.pkl")
+            return Final_Training_data
 
         except Exception as e:
-            self.logging.log(
-                self.file_object,
+            logging.info(
                 f"In tf_idf_vectorizer method In Vectorization class: Error in adding tf-idf features: {e}"
             )
             raise e 
