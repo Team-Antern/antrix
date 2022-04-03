@@ -173,8 +173,10 @@ def main(url):
             df_comment.to_csv(FILE_NAME, encoding='utf-8', index=False)
         else:  # else it exists so append without writing the header
             df_comment.to_csv(FILE_NAME, mode='a', encoding='utf-8', index=False, header=False)
-
+        df = pd.read_csv("informative-reports-creater/yt_comments.csv")  
         print('\n[{:.2f} seconds] Done!'.format(time.time() - start_time))
+
+        return df 
 
     except Exception as e:
         print('Error:', str(e))
