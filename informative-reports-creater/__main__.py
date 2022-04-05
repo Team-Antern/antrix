@@ -19,8 +19,7 @@ def run_training():
 
     # training.run()
 
-    training = feature_engineering_pipeline 
-    ( 
+    training = feature_engineering_pipeline( 
         read_data(), 
         basic_feature_processing(),
         add_features(),
