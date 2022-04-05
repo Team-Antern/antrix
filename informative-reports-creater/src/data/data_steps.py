@@ -38,8 +38,16 @@ def intermediate_data_step() -> Output(
 @step
 def final_data_step() -> Output(
       final_data = pd.DataFrame
-):
+):# Getting the word embeddings for the words in the text column.
+
       intermediate_data_path: str = "informative-reports-creater/data/interim/interm_data_process.csv"
       final_data = FinalProcessing(intermediate_data_path)
       final_data = final_data.main()
       return final_data 
+
+@step 
+def read_data() -> Output(
+      data = pd.DataFrame
+):
+      data = pd.read_csv("informative-reports-creater/data/processed/final_data.csv")
+      return data 

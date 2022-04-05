@@ -1,7 +1,7 @@
 import numpy as np 
 import pandas as pd 
 import logging 
-
+from nltk.corpus import stopwords
 import nltk
 from nltk import sent_tokenize, word_tokenize
 import gensim
@@ -35,7 +35,7 @@ class FeatureEngineering:
         model = gensim.models.Word2Vec(window=10, min_count=2, workers=4)
         model.build_vocab(text_text, progress_per=1000)
         model.train(text_text, total_examples=model.corpus_count, epochs=model.epochs)
-        model.save(r"E:\Hackathon\UGAM\src\saved_model\ugam_texts.model")
+        model.save(r"anfiles/informative-reports-creater/models/yt_text_model.model") 
         return model
 
     def get_word_embeddings(self, model):
@@ -50,7 +50,7 @@ class FeatureEngineering:
         else:
             return None
 
-    def make_acolumn(self, model):
+    def make_similar_features_cols(self, model):
         # make a new column "most similar words" and get the most similar words for every word in text text
         logging.info(
             "Make a new column 'most similar words' and get the most similar words for every word in text text and leave the word whic is not present in the model"
@@ -61,12 +61,7 @@ class FeatureEngineering:
                 self.get_similar(word, model) for word in word_tokenize(x)
             ]  # get the most similar words for every word in text text
         )
-        self.test_data["most_similar_words"] = self.test_data["text"].apply(
-            lambda x: [
-                self.get_similar(word, model) for word in word_tokenize(x)
-            ]  # get the most similar words for every word in text text
-        )
-        return self.df_copy, self.test_data
+        return self.df_copy
 
     def process_most_similar_words(self, text):
 
@@ -95,7 +90,6 @@ class FeatureEngineering:
         # remove extra spaces
         text = re.sub(r"\s+", " ", text)
         # remove stop words
-        from nltk.corpus import stopwords
 
         stop_words = set(stopwords.words("english"))
         text = [word for word in text.split() if word not in stop_words]
@@ -172,8 +166,7 @@ class FeatureEngineering:
 
             extracted_data.shape
             Modified_df = extracted_data.copy()
-            print(Modified_df.shape)
-            Modified_df.head()
+   
             Modified_df.reset_index(drop=True, inplace=True)
             self.df.reset_index(drop=True, inplace=True)
 
