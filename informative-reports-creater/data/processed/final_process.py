@@ -4,22 +4,20 @@ import demoji
 import logging 
 
 class FinalProcessing: 
-    def __init__(self, raw_data_path): 
-        self.raw_data_path = raw_data_path 
-    
+    def __init__(self, df): 
+        self.df = df
+
     def main(self): 
         logging.info("Applying main method on  comment")
         try:
-            df = pd.read_csv(self.raw_data_path) 
-            print(df.head())
-            df['text'] = df["text"].apply( 
+            self.df['text'] = self.df["text"].apply( 
                 lambda x: self.remove_punctuation(x) 
             ) 
-            df.to_csv(
+            self.df.to_csv(
                 "informative-reports-creater/data/processed/processed_data.csv",
                 index=False
             )  
-            return df 
+            return self.df 
         except Exception as e:
             logging.error(
                 "Error in applying main method on  comment"

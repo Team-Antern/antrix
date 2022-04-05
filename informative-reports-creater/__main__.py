@@ -10,22 +10,22 @@ from .src.data.data_steps import raw_data_step, intermediate_data_step, final_da
 from .src.features.feature_engine_steps import basic_feature_processing, add_features, vectorization
 
 def run_training(): 
-    # training = data_pipeline( 
-    #     get_vid_links(),
-    #     raw_data_step(),
-    #     intermediate_data_step(),
-    #     final_data_step(),
-    # )
+    data_pipelines = data_pipeline( 
+        get_vid_links(),
+        raw_data_step(),
+        intermediate_data_step(),
+        final_data_step()
+    )
 
-    # training.run()
+    data_pipelines.run()
 
-    training = feature_engineering_pipeline( 
-        read_data(), 
-        basic_feature_processing(),
-        add_features(),
-        vectorization(),
-    ) 
+    # feature_enginering = feature_engineering_pipeline( 
+    #     read_data(), 
+    #     basic_feature_processing(),
+    #     add_features(),
+    #     vectorization(),
+    # ) 
 
-    training.run()
+    # feature_enginering.run()
 if __name__ == "__main__":
     run_training()

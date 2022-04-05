@@ -25,7 +25,7 @@ YOUTUBE_COMMENTS_AJAX_URL = 'https://www.youtube.com/comment_service_ajax'
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
 # csv file name
-FILE_NAME = 'informative-reports-creater/yt_comments.csv'
+FILE_NAME = 'informative-reports-creater/data/raw/yt_comments.csv'
 
 # set parameters
 # filter comments by popularity or recent, 0:False, 1:True
@@ -173,10 +173,10 @@ def main(url):
             df_comment.to_csv(FILE_NAME, encoding='utf-8', index=False)
         else:  # else it exists so append without writing the header
             df_comment.to_csv(FILE_NAME, mode='a', encoding='utf-8', index=False, header=False)
-        df = pd.read_csv("informative-reports-creater/yt_comments.csv")  
+        df = pd.read_csv("informative-reports-creater/data/raw/yt_comments.csv")  
         print('\n[{:.2f} seconds] Done!'.format(time.time() - start_time))
 
-        return df 
+        return df_comment 
 
     except Exception as e:
         print('Error:', str(e))

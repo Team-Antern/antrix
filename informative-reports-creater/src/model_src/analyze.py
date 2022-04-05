@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud, STOPWORDS 
 from transformers import pipeline
-data = ["I love you", "I hate you"]
-print(sentiment_pipeline(data))
 
 class AnalyzeComments: 
     def __init__(self, data) -> None:
@@ -74,3 +72,8 @@ class AnalyzeComments:
         plt.ylabel('Vote')
         plt.show()
     
+    def get_top_n_important_feedback(self, top_n: int = 10): 
+        """ 
+        TODO : I need to do data collection and do labelling and then make use of Semi Supervised learning to train a model which gives important feedbacks and etc.
+        """
+        pass 

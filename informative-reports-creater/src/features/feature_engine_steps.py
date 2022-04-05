@@ -13,9 +13,10 @@ def basic_feature_processing(data: pd.DataFrame) -> Output(
        return data 
 
 @step 
-def add_features(data: pd.DataFrame, train_gensim_model: bool = True) -> Output(
+def add_features(data: pd.DataFrame) -> Output(
        ouput_data = pd.DataFrame
 ):
+       train_gensim_model = True
        feature_engine = FeatureEngineering(data) 
        if train_gensim_model:
                 model = feature_engine.train_a_gensim_model()
@@ -36,9 +37,10 @@ def add_features(data: pd.DataFrame, train_gensim_model: bool = True) -> Output(
        return data 
 
 @step
-def vectorization(data: pd.DataFrame, column: str) -> Output(
+def vectorization(data: pd.DataFrame) -> Output(
        ouput_data = pd.DataFrame
-):
+): 
+    column = 'text'
     data_copy = data.copy() 
     feature_engine = FeatureEngineering(data_copy)
     data_copy = feature_engine.tf_idf_vectorizer(data_copy[column])
