@@ -1,13 +1,15 @@
-from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
+from transformers import AutoModelForQuestionAnswering, pipeline
 
-model_name = "deepset/roberta-base-squad2"
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
+# tokenizer = AutoTokenizer.from_pretrained("google/pegasus-xsum")
+
+# model = AutoModelForSeq2SeqLM.from_pretrained("google/pegasus-xsum")
 # a) Get predictions
 
 class ExtractiveQnA: 
     def __init__(self) -> None:
-        self.model_name = "deepset/roberta-base-squad2"
-        self.nlp = pipeline('question-answering', model=self.model_name, tokenizer=self.model_name) 
+        self.nlp = pipeline('question-answering') 
 
 
     def get_answer (self, question: str, context: str) -> str:
@@ -18,15 +20,14 @@ class ExtractiveQnA:
             'question': question,
             'context': context
         }
-        nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
-        model = AutoModelForQuestionAnswering.from_pretrained(model_name)
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        res = nlp(QA_input)
-        return res.answer()
+        res = self.nlp(QA_input)
+        return res
     
     def prepare_data_for_qna(self, df) -> str:
         text = df['text']
-        # combine all comments into one string
-        text =  ' '.join(text)
+        # combine all comments into one string 
+        #$ convert every row to str and remove any floats and put full stop every row  
+        # add a full stop in every text 
+        text = ' '.join(str(x) for x in text)
         return text
-    
+

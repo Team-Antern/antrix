@@ -16,11 +16,13 @@ import logging
 
 class IntermediateDataProcess:
     
-    def __init__(self, df):
-        self.df = df 
+    def __init__(self, data):
+        self.data = data 
+        self.df =pd.read_csv(self.data)
     
-    def main(self):
-        logging.info("Applying main method on  comment")
+    def main(self): 
+        print(self.df) 
+        logging.info("Applying interim main method on  comment")
         try: 
             print(self.df)
             self.df['text'] = self.df["text"].apply(

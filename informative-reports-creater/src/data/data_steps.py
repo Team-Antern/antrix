@@ -10,7 +10,7 @@ from ...data.processed.final_process import FinalProcessing
 class PreTrainingConfigs(BaseStepConfig):
       raw_data_path: str = "informative-reports-creater/data/raw/yt_comments.csv" 
       intermediate_data_path: str = "informative-reports-creater/data/interim/interm_data.csv" 
-      final_data_path: str = "informative-reports-creater/data/processed/final_data.csv"
+      final_data_path: str = "informative-reports-creater/data/processed/processed_data.csv"
       
 
 @step 
@@ -23,7 +23,7 @@ def get_vid_links() -> Output(
 def raw_data_step(link: str = "https://www.youtube.com/watch?v=NWONeJKn6kc") -> Output( 
       raw_data = pd.DataFrame
 ):    
-      raw_data = main(link)
+      raw_data = main(link) 
       return raw_data
 
 @step 
@@ -50,5 +50,5 @@ def final_data_step(interim_data: pd.DataFrame) -> Output(
 def read_data() -> Output(
       data = pd.DataFrame
 ):
-      data = pd.read_csv("informative-reports-creater/data/processed/final_data.csv")
+      data = pd.read_csv("informative-reports-creater/data/processed/processed_data.csv")
       return data 

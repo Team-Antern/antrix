@@ -15,7 +15,7 @@ class AnalyzeComments:
         """
         # Create a word cloud of the comments. 
         wordcloud = WordCloud(width=800, height=400, background_color='white',
-                              min_font_size=10).generate(self.data['text'])
+                              min_font_size=10).generate(str(self.data['text']))
 
         # Display the generated image:
         plt.figure(figsize=(10, 8), facecolor='k')
@@ -29,7 +29,10 @@ class AnalyzeComments:
         """
         Generates a frequency plot of the top n words in the comments. 
         """
-        # Create a frequency plot of the top n words in the comments. 
+        # Create a frequency plot of the top n words in the comments.  
+        # remove stop words
+        stop_words = set(STOPWORDS)
+        self.data['text'] = self.data['text'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop_words)]))   
         top_words = self.data['text'].str.split().apply(pd.Series, 1).stack().value_counts()[:top_n]
         top_words.plot(kind='barh', figsize=(10, 8), color='#008080')
         plt.title('Top {} words in comments'.format(top_n))
@@ -44,12 +47,7 @@ class AnalyzeComments:
         # Create a frequency plot of the top n words in the comments. 
         sentiment_pipeline = pipeline("sentiment-analysis")
         self.data['sentiment'] = self.data['text'].apply(sentiment_pipeline) 
-        self.data['sentiment'].value_counts().plot(kind='barh', figsize=(10, 8), color='#008080')
-        plt.title('Overview of video good or not')
-        plt.xlabel('Frequency')
-        plt.ylabel('Sentiment')
-        plt.show()
-    
+        print(self.data)
     def top_n_comments_by_sentiment(self, top_n: int = 10):
         """
         Generates a frequency plot of the top n words in the comments. 
@@ -66,7 +64,7 @@ class AnalyzeComments:
         Generates a frequency plot of the top n words in the comments. 
         """
         # Create a frequency plot of the top n words in the comments. 
-        self.data['vote_count'].value_counts()[:top_n].plot(kind='barh', figsize=(10, 8), color='#008080')
+        self.data['votes'].value_counts()[:top_n].plot(kind='barh', figsize=(10, 8), color='#008080')
         plt.title('Top {} comments by vote'.format(top_n))
         plt.xlabel('Frequency')
         plt.ylabel('Vote')
